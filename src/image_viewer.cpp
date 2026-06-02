@@ -4,7 +4,7 @@
 #include <QDebug>
 
 #include <opencv2/core.hpp>
-#include <opencv2/ximgproc.hpp>
+//#include <opencv2/ximgproc.hpp>
 #include <opencv2/highgui.hpp>
 
 std::vector<Eigen::Vector2d> organizePoints(const std::vector<Eigen::Vector2d> &points)
@@ -235,27 +235,27 @@ void ImageViewer::paintEvent(QPaintEvent *event)
 
     offset = new_top_left;
 
-    int pen_size_min = 4 * image_zoom < 4 ? 4 : 4 * image_zoom;
-    if(corners.size() > 0)
-    {
-        if(selected_point > -1)
-        {
-            painter.setPen(QPen(Qt::red , pen_size_min * 0.5));
-            painter.setBrush(Qt::red);
-        }
-        else
-        {
-            painter.setPen(QPen(Qt::green, pen_size_min * 0.5));
-            painter.setBrush(Qt::green);
-        }
-        for (size_t i = 0; i < corners.size(); ++i)
-        {
-            const QPointF &p1 = imagePoseToWidgetPose(corners[i]);
-            size_t j = (i + 1) % corners.size();
-            const QPointF &p2 = imagePoseToWidgetPose(corners[j]);
-            painter.drawLine(p1, p2);
-        }
-    }
+    // int pen_size_min = 4 * image_zoom < 4 ? 4 : 4 * image_zoom;
+    // if(corners.size() > 0)
+    // {
+    //     if(selected_point > -1)
+    //     {
+    //         painter.setPen(QPen(Qt::red , pen_size_min * 0.5));
+    //         painter.setBrush(Qt::red);
+    //     }
+    //     else
+    //     {
+    //         painter.setPen(QPen(Qt::green, pen_size_min * 0.5));
+    //         painter.setBrush(Qt::green);
+    //     }
+    //     for (size_t i = 0; i < corners.size(); ++i)
+    //     {
+    //         const QPointF &p1 = imagePoseToWidgetPose(corners[i]);
+    //         size_t j = (i + 1) % corners.size();
+    //         const QPointF &p2 = imagePoseToWidgetPose(corners[j]);
+    //         painter.drawLine(p1, p2);
+    //     }
+    // }
 
     if(show_magnifier)
     {
@@ -423,7 +423,7 @@ void ImageViewer::print()
 {
 #if defined(QT_PRINTSUPPORT_LIB) && QT_CONFIG(printdialog)
     QPrinter printer(QPrinter::HighResolution);
-
+    
     QPrintDialog printDialog(&printer, this);
 
     if (printDialog.exec() == QDialog::Accepted)

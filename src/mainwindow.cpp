@@ -13,7 +13,7 @@
 
 #include <sstream>
 
-#include <opencv2/ximgproc.hpp>
+//#include <opencv2/ximgproc.hpp>
 #include <opencv2/highgui.hpp>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),

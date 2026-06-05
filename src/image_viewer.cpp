@@ -4,7 +4,7 @@
 #include <QDebug>
 
 #include <opencv2/core.hpp>
-#include <opencv2/ximgproc.hpp>
+//#include <opencv2/ximgproc.hpp>
 #include <opencv2/highgui.hpp>
 
 std::vector<Eigen::Vector2d> organizePoints(const std::vector<Eigen::Vector2d> &points)
@@ -214,13 +214,13 @@ void ImageViewer::paintEvent(QPaintEvent *event)
     else if(is_zooming || is_translating)
     {
         // You need to compute correct new_top_left instead of QPointF(0, 0)
-        new_top_left = QPointF(0, 0);
+        new_top_left = cursor_pose_image - cursor_pose_widget / image_zoom;
 
         if(is_zooming)
             is_zooming = false;
     }
     else
-    {
+    { 
         new_top_left = offset;
     }
 
@@ -235,27 +235,27 @@ void ImageViewer::paintEvent(QPaintEvent *event)
 
     offset = new_top_left;
 
-    int pen_size_min = 4 * image_zoom < 4 ? 4 : 4 * image_zoom;
-    if(corners.size() > 0)
-    {
-        if(selected_point > -1)
-        {
-            painter.setPen(QPen(Qt::red , pen_size_min * 0.5));
-            painter.setBrush(Qt::red);
-        }
-        else
-        {
-            painter.setPen(QPen(Qt::green, pen_size_min * 0.5));
-            painter.setBrush(Qt::green);
-        }
-        for (size_t i = 0; i < corners.size(); ++i)
-        {
-            const QPointF &p1 = imagePoseToWidgetPose(corners[i]);
-            size_t j = (i + 1) % corners.size();
-            const QPointF &p2 = imagePoseToWidgetPose(corners[j]);
-            painter.drawLine(p1, p2);
-        }
-    }
+    // int pen_size_min = 4 * image_zoom < 4 ? 4 : 4 * image_zoom;
+    // if(corners.size() > 0)
+    // {
+    //     if(selected_point > -1)
+    //     {
+    //         painter.setPen(QPen(Qt::red , pen_size_min * 0.5));
+    //         painter.setBrush(Qt::red);
+    //     }
+    //     else
+    //     {
+    //         painter.setPen(QPen(Qt::green, pen_size_min * 0.5));
+    //         painter.setBrush(Qt::green);
+    //     }
+    //     for (size_t i = 0; i < corners.size(); ++i)
+    //     {
+    //         const QPointF &p1 = imagePoseToWidgetPose(corners[i]);
+    //         size_t j = (i + 1) % corners.size();
+    //         const QPointF &p2 = imagePoseToWidgetPose(corners[j]);
+    //         painter.drawLine(p1, p2);
+    //     }
+    // }
 
     if(show_magnifier)
     {
@@ -382,7 +382,7 @@ void ImageViewer::wheelEvent(QWheelEvent *event)
 
     cursor_pose_widget = event->position();
     cursor_pose_image = QPointF(cursor_pose_widget / image_zoom) + offset;
-
+    
     qreal steps = degrees / 60.0;
     qreal zoom_inc = std::pow(1.125, steps);
     qreal factor = image_zoom * zoom_inc;
@@ -423,7 +423,7 @@ void ImageViewer::print()
 {
 #if defined(QT_PRINTSUPPORT_LIB) && QT_CONFIG(printdialog)
     QPrinter printer(QPrinter::HighResolution);
-
+    
     QPrintDialog printDialog(&printer, this);
 
     if (printDialog.exec() == QDialog::Accepted)

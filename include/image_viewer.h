@@ -70,7 +70,6 @@ private:
     QPointF cursor_pose_widget; // Current cursor's coordinate with respect to widget's coordinate system [pixel]
 
     double image_zoom; // Image zoom factor
-    double prev_image_zoom;
 
     // A rectangular portion of the image is rendered on the widget in which the rectangle is defined as
     // (offset.x(), offset.y(), widget.width(), widget.height())

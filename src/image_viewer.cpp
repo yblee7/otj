@@ -52,7 +52,6 @@ ImageViewer::ImageViewer(QWidget *parent) :
     is_translating(false),
     is_zooming(false),
     image_zoom(1),
-    prev_image_zoom(1),
     show_magnifier(false),
     view_corners(true),
     detect_corners(false),
@@ -215,7 +214,6 @@ void ImageViewer::paintEvent(QPaintEvent *event)
     else if(is_zooming)
     {
         // You need to compute correct new_top_left instead of QPointF(0, 0)
-        new_top_left = cursor_pose_widget * (1/prev_image_zoom - 1/image_zoom) + offset;
 
         if(is_zooming)
             is_zooming = false;
@@ -388,7 +386,6 @@ void ImageViewer::wheelEvent(QWheelEvent *event)
 
     cursor_pose_widget = event->position();
     cursor_pose_image = QPointF(cursor_pose_widget / image_zoom) + offset;
-    prev_image_zoom = image_zoom;
 
     qreal steps = degrees / 60.0;
     qreal zoom_inc = std::pow(1.125, steps);
